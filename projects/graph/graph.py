@@ -39,26 +39,59 @@ class Graph:
         # go to top of loop
 
     def dft(self, starting_vertex):
-        """
-        Print each vertex in depth-first order
-        beginning from starting_vertex.
-        """
-        pass  # TODO
-    def dft_recursive(self, starting_vertex):
+        # create a queue
+        stak = Stack()
+        # created a set of visited  nodes
+        visited = set()
+        # add starting node to queue
+        stak.push(starting_vertex)
+        # while queus is not empty
+        while stak.size() > 0:
+            # pop first node out (before anything else! so it's not buried!)
+            vertex = stak.pop()
+            # if not visited
+            if vertex not in visited:
+                # mark as visited
+                visited.add(vertex)
+                print(vertex) # what is it asking us to do, where is the appropriate place to do it
+                # get adjacent edges and add to list
+                for next_vert in self.vertices[vertex]:
+                    stak.push(next_vert)
+        # go to top of loop
+
+    def dft_recursive(self, starting_vertex, visited=None):
+        if visited is None:
+            # create set of visited nodes (set, each input in unique so we don't repeat visits)
+            visited = set()
+        # start at first vertex, add to visited and print
+        visited.add(starting_vertex)
+        print(starting_vertex)
+        # repeat for every neighbor, adding to visited set
+        for adjacent in self.vertices[starting_vertex]:
+            # if we don't have it:
+            if adjacent not in visited:
+                # call function until we have them all.
+                self.dft_recursive(adjacent, visited)
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
         This should be done using recursion.
+        each problem is a subproblem of the previous problem, but it's not for bredth first because we jump around.
         """
         pass  # TODO
     def bfs(self, starting_vertex, destination_vertex):
+        path = []
+        return path
+
         """
         Return a list containing the shortest path from
         starting_vertex to destination_vertex in
-        breath-first order.
+        breadth-first order.
         """
         pass  # TODO
     def dfs(self, starting_vertex, destination_vertex):
+        path = []
+        return path
         """
         Return a list containing a path from
         starting_vertex to destination_vertex in
@@ -104,6 +137,7 @@ if __name__ == '__main__':
         1, 2, 4, 7, 6, 3, 5
         1, 2, 4, 6, 3, 5, 7
     '''
+    print("start depth first")
     graph.dft(1)
 
     '''
@@ -121,6 +155,7 @@ if __name__ == '__main__':
         1, 2, 4, 3, 7, 6, 5
         1, 2, 4, 3, 7, 5, 6
     '''
+    print("start breadth first")
     graph.bft(1)
 
     '''
@@ -130,6 +165,7 @@ if __name__ == '__main__':
         1, 2, 4, 7, 6, 3, 5
         1, 2, 4, 6, 3, 5, 7
     '''
+    print("start recursive dft")
     graph.dft_recursive(1)
 
     '''
