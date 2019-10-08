@@ -72,38 +72,36 @@ class Graph:
             if adjacent not in visited:
                 # call function until we have them all.
                 self.dft_recursive(adjacent, visited)
-        """
-        Print each vertex in depth-first order
-        beginning from starting_vertex.
-        This should be done using recursion.
-        each problem is a subproblem of the previous problem, but it's not for bredth first because we jump around.
-        """
+       
     def bfs(self, starting_vertex, destination_vertex):
         # create queue
         qq = Queue()
         # create an empty set for visited nodes
         visited = set()
-        # create an empty list for shortest path
-        path = []
+        # # create an empty list for shortest path
+        # path = []
         # add first node to queue
-        qq.enqueue(starting_vertex)
+        qq.enqueue([starting_vertex])
         # while queue is not empty
         while qq.size() > 0:
             # remove first node
             path = qq.dequeue()
             # always grab the last node
             vertex = path[-1]
+            # if it's the first one, congrats, you found it.
+            if vertex == destination_vertex:
+                    print(path) # what is it asking us to do, where is the appropriate place to do it
+                    return path
             # check if it's been visited
             # if not, mark it as visited
             if vertex not in visited:
-                if vertex == destination_vertex:
-                    print(vertex) # what is it asking us to do, where is the appropriate place to do it
-                    return vertex
                 visited.add(vertex)
                 # get adjacent edges and add to list
-                for next_vert in self.vertices[vertex]:
-                    # add to list path 
-                    qq.enqueue(next_vert)
+                for adjacent in self.vertices[vertex]:
+                    # add to list path until you find the destination
+                    mst = list(path)
+                    mst.append(adjacent)
+                    qq.enqueue(adjacent)
         # if queue is empty
         return None
 
@@ -113,7 +111,6 @@ class Graph:
         starting_vertex to destination_vertex in
         breadth-first order.
         """
-        pass  # TODO
     def dfs(self, starting_vertex, destination_vertex):
         # stak = Stack()
         # visited = set()
@@ -201,7 +198,10 @@ if __name__ == '__main__':
     Valid BFS path:
         [1, 2, 4, 6]
     '''
-    print(graph.bfs(1, 6))
+    print("ahh", graph.bfs(1, 6))
+    print("bey", graph.bfs(2, 12))
+    print("say", graph.bfs(1, 12))
+    print("chay", graph.bfs(4, 26))
 
     '''
     Valid DFS paths:
