@@ -59,9 +59,10 @@ class Graph:
                     stak.push(next_vert)
         # go to top of loop
 
-    def dft_recursive(self, starting_vertex, visited=None):
+    def dft_recursive(self, starting_vertex, visited=None): # needs a third parameter to recursively call something. base case = None
+        # if base case, visited = None
         if visited is None:
-            # create set of visited nodes (set, each input in unique so we don't repeat visits)
+            # create set of visited nodes (set because it's lookup time is O(1) and each input in unique so we don't repeat visits)
             visited = set()
         # start at first vertex, add to visited and print
         visited.add(starting_vertex)
@@ -73,7 +74,7 @@ class Graph:
                 # call function until we have them all.
                 self.dft_recursive(adjacent, visited)
        
-    def dfs(self, starting_vertex, destination_vertex):
+    def dfs(self, starting_vertex, destination_vertex): # depth first doesn't care about the shortest path
         # create stack
         stak = Stack()
         # create an empty set for visited nodes
@@ -120,11 +121,12 @@ class Graph:
                     return path
             # check if it's been visited
             # if not, mark it as visited
-            elif vertex not in visited:
+            if vertex not in visited:
                 visited.add(vertex)
                 # get adjacent edges and add to list
                 for adjacent in self.vertices[vertex]:
                     # add to list path until you find the destination
+                    # queue called path is for adding and subtracting, new path is final word 
                     mst = list(path)
                     mst.append(adjacent)
                     qq.enqueue(mst)
