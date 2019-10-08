@@ -73,13 +73,39 @@ class Graph:
                 # call function until we have them all.
                 self.dft_recursive(adjacent, visited)
        
+    def dfs(self, starting_vertex, destination_vertex):
+        # create stack
+        stak = Stack()
+        # create an empty set for visited nodes
+        visited = set()
+        # add first node to stack
+        stak.push([starting_vertex])
+        # while stack is not empty
+        while stak.size() > 0:
+            # remove first node
+            path = stak.pop()
+            # always grab the last node
+            vertex = path[-1]
+            # if it's the chosen one, congrats, you found it.
+            if vertex == destination_vertex:
+                    # print("huh?", path) # what is it asking us to do, where is the appropriate place to do it
+                    return path
+            # check if it's been visited
+            # if not, mark it as visited
+            elif vertex not in visited:
+                visited.add(vertex)
+                # get adjacent edges and add to list
+                for adjacent in self.vertices[vertex]:
+                    # add to list path until you find the destination
+                    mst = list(path)
+                    mst.append(adjacent)
+                    stak.push(mst)
+        return mst
+
     def bfs(self, starting_vertex, destination_vertex):
-        # create queue
         qq = Queue()
         # create an empty set for visited nodes
         visited = set()
-        # # create an empty list for shortest path
-        # path = []
         # add first node to queue
         qq.enqueue([starting_vertex])
         # while queue is not empty
@@ -102,32 +128,8 @@ class Graph:
                     mst = list(path)
                     mst.append(adjacent)
                     qq.enqueue(mst)
-        # if queue is empty
         return mst
-
-        # """
-        # Return a list containing the shortest path from
-        # starting_vertex to destination_vertex in
-        # breadth-first order.
-        # """
-    def dfs(self, starting_vertex, destination_vertex):
-        stak = Stack()
-        visited = set()
-        # create an empty list for shortest path
-        stak.push(starting_vertex)
-        while stak.size() > 0:
-            path = stak.pop()
-            vertex = path[-1]
-            if vertex == destination_vertex:
-                return path
-            elif vertex not in visited:
-                visited.add(vertex)
-                print(vertex)
-                for adjacent in self.vertices[vertex]:
-                    mst = list(path)
-                    mst.append(adjacent)
-                    stak.push(mst)
-        return []
+        
         # """
         # Return a list containing a path from
         # starting_vertex to destination_vertex in
