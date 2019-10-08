@@ -105,24 +105,34 @@ class Graph:
         # if queue is empty
         return mst
 
-        """
-        Return a list containing the shortest path from
-        starting_vertex to destination_vertex in
-        breadth-first order.
-        """
+        # """
+        # Return a list containing the shortest path from
+        # starting_vertex to destination_vertex in
+        # breadth-first order.
+        # """
     def dfs(self, starting_vertex, destination_vertex):
-        # stak = Stack()
-        # visited = set()
+        stak = Stack()
+        visited = set()
         # create an empty list for shortest path
-        # stak.push(starting_vertex)
-        # while stak.size() > 0:
-        #     vertex = stak.pop()
-        """
-        Return a list containing a path from
-        starting_vertex to destination_vertex in
-        depth-first order.
-        """
-        pass  # TODO
+        stak.push(starting_vertex)
+        while stak.size() > 0:
+            path = stak.pop()
+            vertex = path[-1]
+            if vertex == destination_vertex:
+                return path
+            elif vertex not in visited:
+                visited.add(vertex)
+                print(vertex)
+                for adjacent in self.vertices[vertex]:
+                    mst = list(path)
+                    mst.append(adjacent)
+                    stak.push(mst)
+        return []
+        # """
+        # Return a list containing a path from
+        # starting_vertex to destination_vertex in
+        # depth-first order.
+        # """
 
 
 
@@ -204,4 +214,4 @@ if __name__ == '__main__':
         [1, 2, 4, 6]
         [1, 2, 4, 7, 6]
     '''
-    print(graph.dfs(1, 6))
+    print("depth first search", graph.dfs(1, 6))
