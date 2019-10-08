@@ -90,21 +90,20 @@ class Graph:
             vertex = path[-1]
             # if it's the first one, congrats, you found it.
             if vertex == destination_vertex:
-                    print(path) # what is it asking us to do, where is the appropriate place to do it
+                    # print("huh?", path) # what is it asking us to do, where is the appropriate place to do it
                     return path
             # check if it's been visited
             # if not, mark it as visited
-            if vertex not in visited:
+            elif vertex not in visited:
                 visited.add(vertex)
                 # get adjacent edges and add to list
                 for adjacent in self.vertices[vertex]:
                     # add to list path until you find the destination
                     mst = list(path)
                     mst.append(adjacent)
-                    qq.enqueue(adjacent)
+                    qq.enqueue(mst)
         # if queue is empty
-        return None
-
+        return mst
 
         """
         Return a list containing the shortest path from
@@ -198,10 +197,7 @@ if __name__ == '__main__':
     Valid BFS path:
         [1, 2, 4, 6]
     '''
-    print("ahh", graph.bfs(1, 6))
-    print("bey", graph.bfs(2, 12))
-    print("say", graph.bfs(1, 12))
-    print("chay", graph.bfs(4, 26))
+    print("breadth first search", graph.bfs(1, 6))
 
     '''
     Valid DFS paths:
