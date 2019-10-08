@@ -24,7 +24,7 @@ class Graph:
         visited = set()
         # add starting node to queue
         qq.enqueue(starting_vertex)
-        # while queus is not empty
+        # while queue is not empty
         while qq.size() > 0:
             # pop first node out
             vertex = qq.dequeue()
@@ -78,10 +78,35 @@ class Graph:
         This should be done using recursion.
         each problem is a subproblem of the previous problem, but it's not for bredth first because we jump around.
         """
-        pass  # TODO
     def bfs(self, starting_vertex, destination_vertex):
+        # create queue
+        qq = Queue()
+        # create an empty set for visited nodes
+        visited = set()
+        # create an empty list for shortest path
         path = []
-        return path
+        # add first node to queue
+        qq.enqueue(starting_vertex)
+        # while queue is not empty
+        while qq.size() > 0:
+            # remove first node
+            path = qq.dequeue()
+            # always grab the last node
+            vertex = path[-1]
+            # check if it's been visited
+            # if not, mark it as visited
+            if vertex not in visited:
+                if vertex == destination_vertex:
+                    print(vertex) # what is it asking us to do, where is the appropriate place to do it
+                    return vertex
+                visited.add(vertex)
+                # get adjacent edges and add to list
+                for next_vert in self.vertices[vertex]:
+                    # add to list path 
+                    qq.enqueue(next_vert)
+        # if queue is empty
+        return None
+
 
         """
         Return a list containing the shortest path from
@@ -90,8 +115,12 @@ class Graph:
         """
         pass  # TODO
     def dfs(self, starting_vertex, destination_vertex):
-        path = []
-        return path
+        # stak = Stack()
+        # visited = set()
+        # create an empty list for shortest path
+        # stak.push(starting_vertex)
+        # while stak.size() > 0:
+        #     vertex = stak.pop()
         """
         Return a list containing a path from
         starting_vertex to destination_vertex in
