@@ -35,8 +35,7 @@ def dft(x, y, matrix, visited):
 
     while stak.size() > 0:
         vertex = stak.pop()
-        x = vertex[0]
-        y = vertex[1]
+        x , y = vertex
         if not visited[y][x]:
             visited[y][x] = True
             for neighbor in get_neighbors((x,y), matrix):
@@ -45,8 +44,7 @@ def dft(x, y, matrix, visited):
 
 #set of rules used to find neighbors
 def get_neighbors(vertex, graph_matrix):
-    x = vertex[0]
-    y = vertex[1]
+    x, y = vertex
     neighbors = []
     #north
     if y > 0 and graph_matrix[y - 1][x] == 1:
