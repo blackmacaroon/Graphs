@@ -45,15 +45,22 @@ class SocialGraph:
         self.lastID = 0
         self.users = {}
         self.friendships = {}
-        # !!!! IMPLEMENT ME
-
         # Add users
         # loop through and add one for range of numUsers
-        for user in range(numUsers):
-            self.addUser(user)
+        for i in range(numUsers):
+            self.addUser(f"User{i}") # NOTE debug function
         # Create friendships
-        friendships = []
-        random.shuffle(friendships)
+        possible_friendships = []
+        # List all possible combos, requires a nested for loop, connect every user to every friend
+        for userID in self.users:
+            for friendID in range(userID + 1, self.lastID + 1):
+                possible_friendships.append((userID, friendID))
+        
+        random.shuffle(possible_friendships)
+        for i in range(numUsers * avgFriendships // 2):
+            friendship = possible_friendships[i]
+            self.addFriendship(friendship[0], friendship[1])
+        
 
         
 
@@ -67,21 +74,20 @@ class SocialGraph:
         The key is the friend's ID and the value is the path.
         """
         visited = {}  # Note that this is a dictionary, not a set
-        # !!!! IMPLEMENT ME bfs/t
         qq = Queue()
-        qq.enqueue([userID])
+        qq.enqueue([userID]) # so we can build all the possible paths and return the best one
         while qq.size() > 0:
             path = qq.dequeue()
             vertex = path[-1]
-            if vertex == userID:
-                return path
-            if vertex not in visited:
-                visited[vertex] = path
-            for friend in self.friendships[vertex]:
-                if friend not in visited:
-                    new_path = list(path)
-                    new_path.append(friend)
-                    qq.enqueue(new_path)
+            # if neighbor has already been visited, it skips this 
+            if vertex not in visited: #regardless of list or tuple or dictionary, you can ask "is this in here or not"
+                #builds a queue of paths for each visited node
+                visited[vertex] = path # this is the spot in the traversal where we've found an unvisited node. DO THE THING - adding this path to the discionary as A shortest way here
+                
+                for friend in self.friendships[vertex]:
+                    path_copy = path.copy()
+                    path_copy.append(friend)
+                    qq.enqueue(path_copy)
 
         return visited
 
@@ -89,6 +95,8 @@ class SocialGraph:
 if __name__ == '__main__':
     sg = SocialGraph()
     sg.populateGraph(10, 2)
+    print("print friendships")
     print(sg.friendships)
     connections = sg.getAllSocialPaths(1)
+    print("print connections")
     print(connections)
