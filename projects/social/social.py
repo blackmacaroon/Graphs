@@ -1,6 +1,12 @@
 from util import Queue
 import random
 
+# make friends along the way until we have enough
+# need to do something about already existing relationships (collisions)
+# or if you try to be friends with yourself
+# catch the warnings somehow
+
+
 class User:
     def __init__(self, name):
         self.name = name
@@ -94,9 +100,20 @@ class SocialGraph:
 
 if __name__ == '__main__':
     sg = SocialGraph()
-    sg.populateGraph(10, 2)
+    sg.populateGraph(1000, 5)
     print("print friendships")
     print(sg.friendships)
     connections = sg.getAllSocialPaths(1)
     print("print connections")
     print(connections)
+    print(f"users in extended social network: {len(connections) - 1}")
+
+    total_social_paths = 0
+    for user_id in connections:
+        total_social_paths += len(connections[user_id])
+    print(f"average length of social path: {total_social_paths/len(connections)}")
+
+# how realistic is this, how random is it. Is this a good model of what sonething like facebook uses (obviously bigger)
+# flaws in our random generation:  uniform probability, even distribution, everyone is connected to everyone
+# according to google, FB have 2.4 billion active users that average 155 friends
+# make use of other people's work expecially if that work is good and free
