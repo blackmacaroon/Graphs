@@ -48,12 +48,12 @@ class SocialGraph:
         # !!!! IMPLEMENT ME
 
         # Add users
-        user_names = []
-        name = random.sample(user_names, numUsers)
-        for i in range(numUsers):
-            self.addUser(name[i])
-            print()
+        # loop through and add one for range of numUsers
+        for user in range(numUsers):
+            self.addUser(user)
         # Create friendships
+        friendships = []
+        random.shuffle(friendships)
 
         
 
@@ -76,12 +76,12 @@ class SocialGraph:
             if vertex == userID:
                 return path
             if vertex not in visited:
-                visited.add{vertex}
-                for friend in self.friendships[vertex]:
+                visited[vertex] = path
+            for friend in self.friendships[vertex]:
+                if friend not in visited:
                     new_path = list(path)
                     new_path.append(friend)
                     qq.enqueue(new_path)
-
 
         return visited
 
