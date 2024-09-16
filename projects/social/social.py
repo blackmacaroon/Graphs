@@ -1,3 +1,10 @@
+from util import Queue
+import random
+
+# make friends along the way until we have enough
+# need to do something about already existing relationships (collisions)
+# or if you try to be friends with yourself
+# catch the warnings somehow
 
 
 class User:
@@ -44,11 +51,24 @@ class SocialGraph:
         self.lastID = 0
         self.users = {}
         self.friendships = {}
-        # !!!! IMPLEMENT ME
-
         # Add users
-
+        # loop through and add one for range of numUsers
+        for i in range(numUsers):
+            self.addUser(f"User{i}") # NOTE debug function
         # Create friendships
+        possible_friendships = []
+        # List all possible combos, requires a nested for loop, connect every user to every friend
+        for userID in self.users:
+            for friendID in range(userID + 1, self.lastID + 1):
+                possible_friendships.append((userID, friendID))
+        
+        random.shuffle(possible_friendships)
+        for i in range(numUsers * avgFriendships // 2):
+            friendship = possible_friendships[i]
+            self.addFriendship(friendship[0], friendship[1])
+        
+
+        
 
     def getAllSocialPaths(self, userID):
         """
@@ -60,13 +80,40 @@ class SocialGraph:
         The key is the friend's ID and the value is the path.
         """
         visited = {}  # Note that this is a dictionary, not a set
-        # !!!! IMPLEMENT ME
+        qq = Queue()
+        qq.enqueue([userID]) # so we can build all the possible paths and return the best one
+        while qq.size() > 0:
+            path = qq.dequeue()
+            vertex = path[-1]
+            # if neighbor has already been visited, it skips this 
+            if vertex not in visited: #regardless of list or tuple or dictionary, you can ask "is this in here or not"
+                #builds a queue of paths for each visited node
+                visited[vertex] = path # this is the spot in the traversal where we've found an unvisited node. DO THE THING - adding this path to the discionary as A shortest way here
+                
+                for friend in self.friendships[vertex]:
+                    path_copy = path.copy()
+                    path_copy.append(friend)
+                    qq.enqueue(path_copy)
+
         return visited
 
 
 if __name__ == '__main__':
     sg = SocialGraph()
-    sg.populateGraph(10, 2)
+    sg.populateGraph(1000, 5)
+    print("print friendships")
     print(sg.friendships)
     connections = sg.getAllSocialPaths(1)
+    print("print connections")
     print(connections)
+    print(f"users in extended social network: {len(connections) - 1}")
+
+    total_social_paths = 0
+    for user_id in connections:
+        total_social_paths += len(connections[user_id])
+    print(f"average length of social path: {total_social_paths/len(connections)}")
+
+# how realistic is this, how random is it. Is this a good model of what sonething like facebook uses (obviously bigger)
+# flaws in our random generation:  uniform probability, even distribution, everyone is connected to everyone
+# according to google, FB have 2.4 billion active users that average 155 friends
+# make use of other people's work expecially if that work is good and free
